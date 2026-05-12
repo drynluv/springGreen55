@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springGreen55.dao.MemberDAO">
+	
+	<select id="getMemberIdCheck" resultType="memberVO">
+		select * from member where mid = #{mid} and (userDel='NO' or userDel='WT');		
+	</select>
+
+	<select id="getMemberNickNameCheck" resultType="memberVO">
+		select * from member where nickName = #{nickName};		
+	</select>
+	
+	<insert id="setMemberJoin">
+	  <if test="vo.memberType != '일반'">
+			insert into member values (default, #{vo.mid}, #{vo.pwd}, #{vo.nickName}, #{vo.name}, #{vo.gender}, #{vo.birthday}, #{vo.tel}, #{vo.address}, #{vo.email}, #{vo.photo}, 'WT', #{vo.memberType}, default, default, default);
+		</if>	
+	  <if test="vo.memberType == '일반'">
+			insert into member values (default, #{vo.mid}, #{vo.pwd}, #{vo.nickName}, #{vo.name}, #{vo.gender}, #{vo.birthday}, #{vo.tel}, #{vo.address}, #{vo.email}, #{vo.photo}, default, default, default, default, default);
+		</if>	
+	</insert>
+
+	
+</mapper>

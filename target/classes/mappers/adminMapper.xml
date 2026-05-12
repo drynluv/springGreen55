@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.springGreen55.dao.AdminDAO">
+
+    <select id="getRegionList" resultType="String">
+        select region from cafe group by region
+    </select>
+
+    <select id="getMemTotalCount" resultType="int">
+    	select count(*) from member
+    </select>
+    
+    <select id="getMemGeneralCount" resultType="int">
+    	select count(*) from member where memberType = '일반'
+    </select>
+    
+    <select id="getMemOwnerCount" resultType="int">
+    	select count(*) from member where memberType = '대표'
+    </select>
+    
+    <select id="getMemIssueCount" resultType="int">
+    	select count(*) from member where userDel != 'NO'
+    </select>
+    
+    <select id="getMemList" resultType="memberVO">
+    	select * from member
+    		<if test='memberType == "일반"'>
+    			where memberType = '일반'
+    		  <choose> 
+    		  	<when test='userDel == "NO"'>
+    		  		and userDel = 'NO'
+    		  	</when>
+    		  	<when test='userDel == "OK"'>
+    		  		and userDel = 'OK'
+    		  	</when>
+    		  	<otherwise>
+    		  		and userDel = 'WT'
+    		  	</otherwise>
+    			</choose>
+    		</if>
+    		
+    		<if test='memberType == "대표"'>
+    			where memberType = '대표'
+    		  <choose> 
+    		  	<when test='userDel == "NO"'>
+    		  		and userDel = 'NO'
+    		  	</when>
+    		  	<when test='userDel == "OK"'>
+    		  		and userDel = 'OK'
+    		  	</when>
+    		  	<otherwise>
+    		  		and userDel = 'WT'
+    		  	</otherwise>
+    			</choose>
+    		</if>
+    	order by idx desc
+    </select>
+    
+</mapper>
